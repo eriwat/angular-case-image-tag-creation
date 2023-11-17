@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ImageRecognitionService } from './image-recognition.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,26 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'image-tag-case';
+
+  selectedImageUrl: string | ArrayBuffer | null = null;
+  generatedTags: string[] = [];
+
+  constructor(private imageRecService: ImageRecognitionService) {}
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.generateTags(file);
+      const reader = new FileReader();
+      reader.onload = e => this.selectedImageUrl = reader.result;
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  generateTags(file: File): void {
+    this.imageRecService.generateImage(file).subscribe(response => {
+      console.log('Response from service:', response);
+      this.generatedTags = response.tags;
+    });
+  }
 }
