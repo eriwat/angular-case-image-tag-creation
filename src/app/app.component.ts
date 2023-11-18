@@ -14,12 +14,13 @@ export class AppComponent {
 
   constructor(private imageRecService: ImageRecognitionService) {}
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.generateImageLabels (file);
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.generateImageLabels(file);
       const reader = new FileReader();
-      reader.onload = e => this.selectedImageUrl = reader.result;
+      reader.onload = () => this.selectedImageUrl = reader.result;
       reader.readAsDataURL(file);
     }
   }

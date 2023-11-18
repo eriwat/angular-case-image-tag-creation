@@ -3,19 +3,29 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { googlecloudvisionapi } from '../config/googlecloudvisionapi';
 
+interface LabelAnnotation {
+  description: string;
+}
+
+interface VisionApiResponse {
+  responses: Array<{
+    labelAnnotations: LabelAnnotation[];
+  }>;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ImageRecognitionService {
   constructor(private http: HttpClient) {}
 
-  generateImageLabels(file: File): Observable<any> {
+  generateImageLabels(file: File): Observable<{ tags: string[] }> {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     return new Observable(observer => {
       reader.onloadend = () => {
-        if (reader.result) { // Add null check for reader.result
-          const base64Image = reader.result.toString().split(',')[1]; // Remove the data URL part
+        if (reader.result) {
+          const base64Image = reader.result.toString().split(',')[1];
           const body = {
             "requests": [
               {
@@ -25,17 +35,16 @@ export class ImageRecognitionService {
                 "features": [
                   {
                     "type": "LABEL_DETECTION",
-                    "maxResults": 3 // Adjust number of results as needed
+                    "maxResults": 5
                   }
                 ]
               }
             ]
           };
 
-          this.http.post<any>('https://vision.googleapis.com/v1/images:annotate?key=' + googlecloudvisionapi.googleCloudVisionAPIKey, body)
-            .subscribe((response: any) => { // Use 'any' type for response temporarily
-              // Extract labels from response, define explicit type for 'label'
-              const labels = response.responses[0].labelAnnotations.map((label: any) => label.description);
+          this.http.post<VisionApiResponse>('https://vision.googleapis.com/v1/images:annotate?key=' + googlecloudvisionapi.googleCloudVisionAPIKey, body)
+            .subscribe(response => {
+              const labels = response.responses[0].labelAnnotations.map(label => label.description);
               observer.next({ tags: labels });
             }, error => {
               observer.error(error);
