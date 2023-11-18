@@ -17,15 +17,15 @@ export class AppComponent {
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      this.generateTags(file);
+      this.generateImageLabels (file);
       const reader = new FileReader();
       reader.onload = e => this.selectedImageUrl = reader.result;
       reader.readAsDataURL(file);
     }
   }
   
-  generateTags(file: File): void {
-    this.imageRecService.generateImage(file).subscribe(response => {
+  generateImageLabels(file: File): void {
+    this.imageRecService.generateImageLabels(file).subscribe(response => {
       console.log('Response from service:', response);
       this.generatedTags = response.tags;
     });
