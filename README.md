@@ -1,5 +1,7 @@
 # ImageTagCase
 
+LIVE demo URL: https://angular-case-image-tag.web.app/
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.1.
 
 ## Development server
@@ -25,3 +27,13 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Deploy to Firebase
+Run `firebase deploy` on the project directly. It will give you the URL of the live demo site on the terminal. 
+Currently the URL is: https://angular-case-image-tag.web.app/
+
+## Start Firebase emulator
+Run `firebase emulators:start` on the project directory
+
+### Firebase console
+https://console.firebase.google.com/project/angular-case-image-tag/hosting/sites/angular-case-image-tag

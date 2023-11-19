@@ -35,7 +35,7 @@ export class ImageRecognitionService {
                 "features": [
                   {
                     "type": "LABEL_DETECTION",
-                    "maxResults": 5
+                    "maxResults": 3
                   }
                 ]
               }

@@ -5,29 +5,32 @@
 
 <div class="content">
 
-    <!-- Image upload and preview -->
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Submit your image</mat-card-title>
-        <mat-card-subtitle>Tags will be created by Google Cloud Vision AI</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="image-picker">
-          <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
-          <button mat-raised-button (click)="fileInput.click()" color="primary">
-            <mat-icon>upload</mat-icon> Pick an Image
-          </button>
-          <img *ngIf="selectedImageUrl" [src]="selectedImageUrl" class="preview-image">
-        </div>
-        <!-- Display generated tags -->
-        <div *ngIf="generatedTags.length > 0">
-          <p>Auto generated Tags:</p>
-          <span *ngFor="let tag of generatedTags" class="tag">{{ tag }}</span>
-        </div>
-      </mat-card-content>
-    </mat-card>
+  <!-- Image upload and preview -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Submit your image</mat-card-title>
+      <mat-card-subtitle>Tags will be created by Google Cloud Vision AI</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="image-picker">
+        <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
+        <button class="image-picker__button" mat-raised-button (click)="fileInput.click()" color="primary" *ngIf="!selectedImageUrl">
+          <mat-icon>upload</mat-icon> Pick an Image
+        </button>
+        <button class="image-picker__button" mat-raised-button color="primary" *ngIf="selectedImageUrl" (click)="fileInput.click()">
+          <mat-icon>autorenew</mat-icon> Try again
+        </button>        
+        <img *ngIf="selectedImageUrl" [src]="selectedImageUrl" class="image-picker__image">
+        <mat-spinner *ngIf="isLoading" class="image-picker__spinner"></mat-spinner>
+      </div>
 
-  <!-- Simple Description -->
+      <div [@fadeIn] *ngIf="generatedTags.length > 0" class="tags-container">
+        <h3 class="tags-container__title">Tags are generated<mat-icon class="green-tick">check_circle</mat-icon></h3>
+        <span *ngFor="let tag of generatedTags" class="tag">{{ tag }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
   <mat-card class="example-card">
     <mat-card-header>
       <mat-card-title>About This Demo</mat-card-title>
@@ -38,52 +41,34 @@
       <ul>
         <li>
           <strong>Angular (Latest Non-Standalone Version):</strong>
-          Utilized for crafting the core structure of the application.
+          Creating the core structure of the application.
         </li>
         <li>
           <strong>Angular Material:</strong>
-          Leveraged to style the application.
-        </li>
-        <li>
-          <strong>Firebase:</strong>
-          Used for hosting of the Angular app and searver side API call to Google Cloud Vision AI.
+          Used to style the application.
         </li>
         <li>
           <strong>ESLint:</strong>
-          Used for quality assurance of TypeScript.
+          Used for quality assurance of TypeScript
         </li>
         <li>
           <strong>Google Cloud Vision AI:</strong>
-          Integrated for the image recognition capabilities. This AI engine analyzes uploaded images and generates descriptive tags.
+          Integrated for the image recognition and tag creation 
         </li>
         <li>
           <strong>Git:</strong>
-          Employed for version control, facilitating tracking of code changes and collaboration.
+          Used for version control
+        </li>
+        <li>
+          <strong>Firebase:</strong>
+          Used for hosting of the Angular app
         </li>
       </ul>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button>See the codebase</button>
+      <a href="https://github.com/eriwat/angular-case-image-tag-creation/tree/master" target="_blank">
+        <button mat-raised-button>See the codebase</button>
+      </a>
     </mat-card-actions>
   </mat-card>
-
-  <!-- Form Fields -->
-  <!--<mat-card>
-    <mat-card-header>
-      <mat-card-title>Form</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-form-field appearance="fill">
-        <mat-label>Enter your name</mat-label>
-        <input matInput placeholder="Ex. John Doe">
-      </mat-form-field>
-    </mat-card-content>
-  </mat-card>-->
-
-
-  
-
-  
-
-  <!-- Additional cards and content can be added here -->
 </div>
